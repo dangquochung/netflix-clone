@@ -98,7 +98,7 @@ configureNavbar()
 
 ~~~
 
-Tạo button bar trái phải 
+Tạo button bar tray phải 
 
 ~~~
  private func configureNavbar() {
@@ -122,5 +122,32 @@ func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offset = scrollView.contentOffset.y + defaultOffset
         
         navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -offset))
+    }
+~~~
+
+***
+6. Custom header of section in tableview at homeviewcontroller
+Ý tưởng là có 1 chuỗi các title 
+ ~~~
+let sectionTitles: [String] = ["Trending Movies","Popular", "Trending TV", "Upcoming Movies", "Top Rated"]
+~~~
+
+Rồi sau đó truyền vào tableview thông qua 
+
+~~~
+func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sectionTitles[section]
+    }
+~~~
+
+Tiếp tục custom font chữ và vị trí và màu của text label header
+Hàm này sử dụng đc cho cả header và footer
+
+~~~
+func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard let header = view as? UITableViewHeaderFooterView else { return }
+        header.textLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+        header.textLabel?.frame = CGRect(x: header.bounds.origin.x + 20, y: header.bounds.origin.y, width: 100, height: header.bounds.height)
+        header.textLabel?.textColor = .white
     }
 ~~~
