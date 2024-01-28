@@ -142,7 +142,6 @@ func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -
 
 Tiếp tục custom font chữ và vị trí và màu của text label header
 Hàm này sử dụng đc cho cả header và footer
-
 ~~~
 func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else { return }
@@ -151,3 +150,58 @@ func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, for
         header.textLabel?.textColor = .white
     }
 ~~~
+
+***
+7. Sending URL request and parsing json response
+
+Ý tưởng là lấy data từ API
+Đầu tiên phải có API_KEY và baseURL
+Quan Sát data và đưa ra các thuộc tính của Movie
+Cài đặt Model cho Movie, Cài đặt APICaller sử dụng gọi api bằng URLSession 
+Mô hình hóa data, decode data dựa trên model vừa tạo 
+sử dụng closure Result<[Movie], Error>
+
+~~~
+class APICaller {
+    //tao 1 the hien cuar lop APICaller de co the acess cac tai nguyen trong lop nay
+    static let shared = APICaller()
+    
+    func getTrendingMovies(completion: @escaping (Result<[Movie], Error>) -> Void) {
+        guard let url = URL(string: "\(Constants.baseUrl)/3/trending/all/day?api_key=\(Constants.API_KEY)") else {
+            return
+        }
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            do {
+                let results = try JSONDecoder().decode(TrendingMovieResponse.self, from: data)
+                completion(.success(results.results))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+        
+        task.resume()
+    }
+}
+~~~
+
+Gọi ra ở VIewController (thực ra nên gọi ở ViewModel và bắn data sang ViewController, sẽ update sau )
+
+~~~
+private func getTrendingMovies() {
+        APICaller.shared.getTrendingMovies { results in
+            switch results {
+            case .success(let movies):
+                print(movies)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+~~~
+
+***
+
+
