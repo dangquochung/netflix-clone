@@ -98,7 +98,7 @@ configureNavbar()
 
 ~~~
 
-Tạo button bar tray phải 
+Tạo button bar trái phải 
 
 ~~~
  private func configureNavbar() {
