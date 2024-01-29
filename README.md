@@ -216,4 +216,30 @@ extension String {
 
 ***
 
-9. 
+9. Consuming API to fetch data to each section
+Ý tưởng là tạo ra hàm fetch data cho mỗi section tương ứng (lấy trên movie db)
+VD
+
+~~~
+func getTrendingTvs(completion: @escaping (Result<[TV], Error>) -> Void) {
+        guard let url = URL(string: "\(Constants.baseUrl)/3/trending/tv/day?api_key=\(Constants.API_KEY)") else {
+            return
+        }
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            do {
+                let results = try JSONDecoder().decode(TrendingTVResponse.self, from: data)
+                print(results)
+                completion(.success(results.results))
+            }
+            catch {
+                completion(.failure(error))
+            }
+        }
+        task.resume()
+    }
+~~~
+
+***
