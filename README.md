@@ -316,3 +316,47 @@ switch indexPath.section {
 ~~~
 
 ***
+
+11. Create upcoming tableview inside upcoming view
+Ý tưởng là: tạo tableview bên trong view upcoming, cấu hình table và fetchdata tương tự homeview
+
+Khai báo title dạng chuỗi rỗng 
+
+~~~
+private var titles: [Title] = [Title]()
+~~~
+
+Tạo tableview, gán delegate/datasource
+
+~~~
+table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+upcomingTable.delegate = self
+upcomingTable.dataSource = self
+~~~
+
+Fetch data
+
+~~~
+private func fetchUpcoming() {
+        APICaller.shared.getUpcomingMovies { [weak self] result in
+            switch result {
+            case .success(let titles):
+                self?.titles = titles
+                DispatchQueue.main.async {
+                    self?.upcomingTable.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+~~~
+
+Gán data vào cell 
+
+~~~
+cell.textLabel?.text = titles[indexPath.row].original_name ?? titles[indexPath.row].original_title ?? "Unknow"
+~~~
+
+***
+12. 
