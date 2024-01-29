@@ -204,4 +204,16 @@ private func getTrendingMovies() {
 
 ***
 
+8. Capitalize First Letter
+Ý tưởng là chỉ viết hoa chữ cái đầu của title header of section, viết hoa chữ cái đầu + phần còn lại lower và bỏ chữ cái đầu
+~~~
+extension String {
+    func capitalizeFirstLetter() -> String {
+        return self.prefix(1).uppercased() + self.lowercased().dropFirst()
+    }
+}
+~~~
 
+***
+
+9. 
