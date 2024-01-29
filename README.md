@@ -219,7 +219,6 @@ extension String {
 9. Consuming API to fetch data to each section
 Ý tưởng là tạo ra hàm fetch data cho mỗi section tương ứng (lấy trên movie db)
 VD
-
 ~~~
 func getTrendingTvs(completion: @escaping (Result<[TV], Error>) -> Void) {
         guard let url = URL(string: "\(Constants.baseUrl)/3/trending/tv/day?api_key=\(Constants.API_KEY)") else {
@@ -238,8 +237,82 @@ func getTrendingTvs(completion: @escaping (Result<[TV], Error>) -> Void) {
                 completion(.failure(error))
             }
         }
+        
         task.resume()
     }
+~~~
+
+***
+10. Thêm ảnh cho collection view cell
+
+Ý tưởng là sử dụng sdwebimage để hiển thị ảnh trong cell
+
+Thêm package từ link 
+
+~~~
+https://github.com/SDWebImage/SDWebImage.git
+~~~
+
+Setup collection viewcell bằng view riêng TitleCollectionViewCell, bao gồm imageview 
+Configure imageview nhận ảnh từ api 
+
+~~~
+public func configure(with model: String) {
+        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model)") else {
+            return
+        }
+        posterImageView.sd_setImage(with: url, completed: nil)
+    }
+~~~
+
+Ở tableviewcell
+Khai báo data với dạng chuỗi rỗng và đăng ký cell identifier = TitleCollectionViewCell
+
+~~~
+private var titles: [Title] = [Title]()
+~~~
+
+Configure data và reload collectionview 
+
+~~~
+public func configure(with titles: [Title]) {
+        self.titles = titles
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reloadData()
+        }
+    }
+~~~
+
+Config collectionview cell 
+
+~~~
+ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TitleCollectionViewCell.identifier, for: indexPath) as? TitleCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        guard let model = titles[indexPath.row].poster_path else { return UICollectionViewCell() }
+        cell.configure(with: model)
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return titles.count
+    }
+~~~
+
+Ở HomeViewController, setup cellForRowAt, fill data từ api cho mỗi section trả về 
+
+~~~
+switch indexPath.section {
+        case Sections.TrendingMovies.rawValue:
+            APICaller.shared.getTrendingMovies { result in
+                switch result {
+                case .success(let titles):
+                    cell.configure(with: titles)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
 ~~~
 
 ***
