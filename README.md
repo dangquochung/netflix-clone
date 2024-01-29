@@ -359,4 +359,48 @@ cell.textLabel?.text = titles[indexPath.row].original_name ?? titles[indexPath.r
 ~~~
 
 ***
-12. 
+
+12.  Fetch data vão upcoming view và cai đặt hiển thị view
+
+Tạo view model 
+
+~~~
+struct TitleViewModel {
+    let titleName: String
+    let posterURL: String 
+}
+~~~
+
+Tạo tableviewcell với image/label/button + constraint them 
+Tạo hàm configure gán data ảnh/title vào cell 
+
+~~~
+public func configure(with model: TitleViewModel) {
+        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model.posterURL)") else {
+            return
+        }
+        titlePosterUIImageView.sd_setImage(with: url, completed: nil)
+        titleLabel.text = model.titleName
+    }
+~~~
+
+Cài đặt tablerow 
+
+~~~
+func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TitleTableViewCell.identifier, for: indexPath) as? TitleTableViewCell else {
+            return UITableViewCell()
+        }
+        let title = titles[indexPath.row]
+        cell.configure(with: TitleViewModel(titleName: title.original_name ?? title.original_title ?? "Unknow", posterURL: title.poster_path ?? ""))
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 140
+    }
+~~~
+
+***
+
+13. 
