@@ -439,3 +439,69 @@ private let searchResultsCollectionView: UICollectionView = {
 ~~~
 
 ***
+
+14. Querying database for individual movie 
+Ý tưởng configure api search with string
+
+~~~
+func search(with query: String, completion: @escaping (Result<[Title], Error>) -> Void) {
+        //đề phòng lỗi query
+        guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
+        
+        //https://api.themoviedb.org/3/search/movie?query=Jack+Reacher&api_key=1fa244b2c0707c1930e3912ac563b85a
+        guard let url = URL(string: "\(Constants.baseUrl)/3/search/movie?query=\(query)&api_key=\(Constants.API_KEY)") else {
+            return
+        }
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            do {
+                let results = try JSONDecoder().decode(TrendingTitleResponse.self, from: data)
+                completion(.success(results.results))
+            }
+            catch {
+                completion(.failure(APIError.failedToGetData))
+            }
+        }
+        
+        task.resume()
+    }
+~~~
+
+- Gán delegate cho search controller 
+
+~~~
+searchController.searchResultsUpdater = self
+~~~
+
+- Tuân thủ protocol của searchresultupdating, truyền data kết quả về resultcontroller (from searchviewcontroller) + reload collectionresult
+
+~~~
+extension SearchViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        guard let query = searchBar.text,
+              !query.trimmingCharacters(in: .whitespaces).isEmpty,
+              query.trimmingCharacters(in: .whitespaces).count >= 3,
+              let resultController = searchController.searchResultsController as? SearchResultViewController else {
+            return
+        }
+        APICaller.shared.search(with: query) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let titles):
+                    resultController.titles = titles
+                    resultController.searchResultsCollectionView.reloadData()
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
+}
+~~~
+
+*** 
+
+15. Using YouTube api 

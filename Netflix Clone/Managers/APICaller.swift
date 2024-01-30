@@ -143,5 +143,29 @@ class APICaller {
         
         task.resume()
     }
+    
+    func search(with query: String, completion: @escaping (Result<[Title], Error>) -> Void) {
+        
+        guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
+        
+        //https://api.themoviedb.org/3/search/movie?query=Jack+Reacher&api_key=1fa244b2c0707c1930e3912ac563b85a
+        guard let url = URL(string: "\(Constants.baseUrl)/3/search/movie?query=\(query)&api_key=\(Constants.API_KEY)") else {
+            return
+        }
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            do {
+                let results = try JSONDecoder().decode(TrendingTitleResponse.self, from: data)
+                completion(.success(results.results))
+            }
+            catch {
+                completion(.failure(APIError.failedToGetData))
+            }
+        }
+        
+        task.resume()
+    }
 }
 
