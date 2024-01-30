@@ -504,4 +504,49 @@ extension SearchViewController: UISearchResultsUpdating {
 
 *** 
 
-15. Using YouTube api 
+15. Using YouTube api:
+
+B1: Vào google deve console
+B2: Vào Credentials -> Create project , đặt tên 
+B3: Create Credentials -> api key created , để truy cập YouTube api 
+B4: Kích hoạt api YouTube -> chọn tab Enabled APIs & Services -> click Enabled APIs & Services
+B5: Scroll down thấy thì click vào Youtube Data API v3, click Enable => show api service detail page 
+B6: Back về tab Credentials -> copy key 
+B7: Vào trang https://developers.google.com/youtube/v3?hl=vi, vào phần Search for content, hiện ra danh sách api của YouTube 
+B8: Scroll down cột bên phải, nhấn vào button SHOW CODE, rồi click vào tab HTTP
+B9: Copy link get https://youtube.googleapis.com/youtube/v3/search?q=harry&key=[YOUR_API_KEY]
+
+- Setting api call
+
+~~~
+func getMovie(with query: String) {
+        guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
+        //https://youtube.googleapis.com/youtube/v3/search?q=harry&key=[YOUR_API_KEY]
+        guard let url = URL(string: "\(Constants.YoutubeBaseURL)q=\(query)&key=\(Constants.YoutubeAPI_KEY)") else {
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            do {
+                let results = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
+                print(results)
+            }
+            catch {
+                print(error)
+            }
+        }
+        
+        task.resume()
+    }
+~~~
+
+Test 
+
+~~~
+ APICaller.shared.getMovie(with: "harry potter")
+~~~
+
+16. Parsing Youtube API response
