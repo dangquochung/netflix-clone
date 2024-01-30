@@ -15,6 +15,7 @@
 		1F3A69252B68148700D203F1 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1F3A69242B68148700D203F1 /* SDWebImageMapKit */; };
 		1F3A69272B683B1200D203F1 /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3A69262B683B1200D203F1 /* TitleTableViewCell.swift */; };
 		1F3A69292B683D7900D203F1 /* TItleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3A69282B683D7900D203F1 /* TItleViewModel.swift */; };
+		1F83B6232B693F640001F059 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83B6222B693F640001F059 /* SearchResultViewController.swift */; };
 		1F84E72B2B66AB17005A1ABF /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F84E72A2B66AB17005A1ABF /* APICaller.swift */; };
 		1F84E72D2B66B1F2005A1ABF /* Title.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F84E72C2B66B1F2005A1ABF /* Title.swift */; };
 		1FAED3482B61A02200839374 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAED3472B61A02200839374 /* AppDelegate.swift */; };
@@ -36,6 +37,7 @@
 		1F3A691F2B680D0400D203F1 /* TitleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleCollectionViewCell.swift; sourceTree = "<group>"; };
 		1F3A69262B683B1200D203F1 /* TitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
 		1F3A69282B683D7900D203F1 /* TItleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TItleViewModel.swift; sourceTree = "<group>"; };
+		1F83B6222B693F640001F059 /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		1F84E72A2B66AB17005A1ABF /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
 		1F84E72C2B66B1F2005A1ABF /* Title.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Title.swift; sourceTree = "<group>"; };
 		1FAED3442B61A02200839374 /* Netflix Clone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Netflix Clone.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -108,6 +110,26 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
+		1F83B6242B693FAD0001F059 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				1FAED34B2B61A02200839374 /* MainTabBarViewController.swift */,
+				1FAED35F2B61A3AA00839374 /* HomeViewController.swift */,
+				1FAED3612B61A3FB00839374 /* UpcomingViewController.swift */,
+				1FAED3632B61A42E00839374 /* SearchViewController.swift */,
+				1FAED3652B61A44D00839374 /* DownloadViewController.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		1F83B6252B693FCC0001F059 /* General */ = {
+			isa = PBXGroup;
+			children = (
+				1F83B6222B693F640001F059 /* SearchResultViewController.swift */,
+			);
+			path = General;
+			sourceTree = "<group>";
+		};
 		1FAED33B2B61A02200839374 = {
 			isa = PBXGroup;
 			children = (
@@ -135,7 +157,6 @@
 				1FAED35E2B61A38300839374 /* Controllers */,
 				1FAED3472B61A02200839374 /* AppDelegate.swift */,
 				1FAED3492B61A02200839374 /* SceneDelegate.swift */,
-				1FAED34B2B61A02200839374 /* MainTabBarViewController.swift */,
 				1FAED3532B61A02300839374 /* Assets.xcassets */,
 				1FAED3552B61A02300839374 /* LaunchScreen.storyboard */,
 				1FAED3582B61A02300839374 /* Info.plist */,
@@ -147,10 +168,8 @@
 		1FAED35E2B61A38300839374 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				1FAED35F2B61A3AA00839374 /* HomeViewController.swift */,
-				1FAED3612B61A3FB00839374 /* UpcomingViewController.swift */,
-				1FAED3632B61A42E00839374 /* SearchViewController.swift */,
-				1FAED3652B61A44D00839374 /* DownloadViewController.swift */,
+				1F83B6252B693FCC0001F059 /* General */,
+				1F83B6242B693FAD0001F059 /* Core */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -245,6 +264,7 @@
 				1F3A69272B683B1200D203F1 /* TitleTableViewCell.swift in Sources */,
 				1FAED3482B61A02200839374 /* AppDelegate.swift in Sources */,
 				1F84E72B2B66AB17005A1ABF /* APICaller.swift in Sources */,
+				1F83B6232B693F640001F059 /* SearchResultViewController.swift in Sources */,
 				1F3A69292B683D7900D203F1 /* TItleViewModel.swift in Sources */,
 				1FAED3662B61A44D00839374 /* DownloadViewController.swift in Sources */,
 				1FAED34A2B61A02200839374 /* SceneDelegate.swift in Sources */,

@@ -407,4 +407,35 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
 Về nguyên lý làm giống ko khác gì so với tableview trong upcoming view
 
 ***
-14.
+
+14. Creating searchResultsViewController to display search results
+Ý tưởng là:
+- Thêm searchbar vào discoverView (SearchView) khi tab vào searchbar sẽ hiển thị searchresultviewcontroller, tab ra ngoài hoặc xóa hết thì ẩn view đó đi 
+
+~~~
+private let searchController: UISearchController = {
+        let controller = UISearchController(searchResultsController: SearchResultViewController())
+        controller.searchBar.placeholder = "Search for a movie or a tv show"
+        controller.searchBar.searchBarStyle = .minimal
+        return controller
+    }()
+
+
+navigationController?.navigationBar.tintColor = .white
+        navigationItem.searchController = searchController
+~~~
+
+- Thêm searchResult viewcontroller bao gồm collection view full frame
+
+~~~
+private let searchResultsCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 3 - 10, height: 200)
+        layout.minimumInteritemSpacing = 0
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(TitleCollectionViewCell.self, forCellWithReuseIdentifier: TitleCollectionViewCell.identifier)
+        return collectionView
+    }()
+~~~
+
+***
