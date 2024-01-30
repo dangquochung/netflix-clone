@@ -20,6 +20,7 @@ Bắt buộc
 
 Delegate xử lý sự kiện của tableview
 Datasource xử lý dữ liệu và cách hiển thị của tableview
+
 ~~~
 tableView.delegate = self
 ~~~
@@ -34,15 +35,16 @@ Tương tự với datasource
 Tạo cocoatouchclass tableviewcell
 - Đặt định danh cho cell
 - Khởi tạo và đặt lỗi 
+
 ~~~
 override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
     required init(coder: NSCoder) {
         fatalError()
     }
 ~~~
+
 Giải thích đoạn code trong UITableViewCell:
 1. override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?):
 * Đây là phương thức khởi tạo (initializer) được gọi khi bạn tạo một UITableViewCell trực tiếp trong code.
@@ -55,6 +57,7 @@ Giải thích đoạn code trong UITableViewCell:
 * Trong đoạn code này, phương thức này được triển khai để ném ra một lỗi nghiêm trọng (fatalError()), ngăn chặn việc khởi tạo cell từ file lưu trữ. Điều này thường được thực hiện khi cell được thiết kế để được tạo trực tiếp trong code và không cần thiết phải lưu trữ hoặc giải mã từ file.
 
 Ở homeviewController
+
 ~~~
 func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.identifier, for: indexPath) as? CollectionViewTableViewCell else {
@@ -63,6 +66,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
         return cell
     }
 ~~~
+
 Các bước thực hiện:
 1. Tái sử dụng cell:
     * tableView.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.identifier, for: indexPath):
@@ -93,6 +97,7 @@ Setup cellForItemAt và numberOfItemInsection
 
 ***
 5. Customize navigation bar 
+
 ~~~
 configureNavbar()
 
@@ -109,7 +114,6 @@ Tạo button bar tray phải
             UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil),
             UIBarButtonItem(image: UIImage(systemName: "play.rectangle"), style: .done, target: self, action: nil)
         ]
-        
         navigationController?.navigationBar.tintColor = .white
     }
 ~~~
@@ -120,15 +124,15 @@ Tạo button bar tray phải
 func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let defaultOffset = view.safeAreaInsets.top
         let offset = scrollView.contentOffset.y + defaultOffset
-        
         navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -offset))
-    }
+        }
 ~~~
 
 ***
 6. Custom header of section in tableview at homeviewcontroller
 Ý tưởng là có 1 chuỗi các title 
- ~~~
+
+~~~
 let sectionTitles: [String] = ["Trending Movies","Popular", "Trending TV", "Upcoming Movies", "Top Rated"]
 ~~~
 
@@ -142,6 +146,7 @@ func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -
 
 Tiếp tục custom font chữ và vị trí và màu của text label header
 Hàm này sử dụng đc cho cả header và footer
+
 ~~~
 func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else { return }
@@ -165,9 +170,8 @@ sử dụng closure Result<[Movie], Error>
 class APICaller {
     //tao 1 the hien cuar lop APICaller de co the acess cac tai nguyen trong lop nay
     static let shared = APICaller()
-    
     func getTrendingMovies(completion: @escaping (Result<[Movie], Error>) -> Void) {
-        guard let url = URL(string: "\(Constants.baseUrl)/3/trending/all/day?api_key=\(Constants.API_KEY)") else {
+    guard let url = URL(string: "\(Constants.baseUrl)/3/trending/all/day?api_key=\(Constants.API_KEY)") else {
             return
         }
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
@@ -181,7 +185,6 @@ class APICaller {
                 completion(.failure(error))
             }
         }
-        
         task.resume()
     }
 }
@@ -206,6 +209,7 @@ private func getTrendingMovies() {
 
 8. Capitalize First Letter
 Ý tưởng là chỉ viết hoa chữ cái đầu của title header of section, viết hoa chữ cái đầu + phần còn lại lower và bỏ chữ cái đầu
+
 ~~~
 extension String {
     func capitalizeFirstLetter() -> String {
@@ -219,6 +223,7 @@ extension String {
 9. Consuming API to fetch data to each section
 Ý tưởng là tạo ra hàm fetch data cho mỗi section tương ứng (lấy trên movie db)
 VD
+
 ~~~
 func getTrendingTvs(completion: @escaping (Result<[TV], Error>) -> Void) {
         guard let url = URL(string: "\(Constants.baseUrl)/3/trending/tv/day?api_key=\(Constants.API_KEY)") else {
@@ -237,7 +242,6 @@ func getTrendingTvs(completion: @escaping (Result<[TV], Error>) -> Void) {
                 completion(.failure(error))
             }
         }
-        
         task.resume()
     }
 ~~~
@@ -294,7 +298,6 @@ Config collectionview cell
         cell.configure(with: model)
         return cell
     }
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return titles.count
     }
@@ -395,7 +398,6 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
         cell.configure(with: TitleViewModel(titleName: title.original_name ?? title.original_title ?? "Unknow", posterURL: title.poster_path ?? ""))
         return cell
     }
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 140
     }
@@ -419,8 +421,6 @@ private let searchController: UISearchController = {
         controller.searchBar.searchBarStyle = .minimal
         return controller
     }()
-
-
 navigationController?.navigationBar.tintColor = .white
         navigationItem.searchController = searchController
 ~~~
@@ -447,7 +447,6 @@ private let searchResultsCollectionView: UICollectionView = {
 func search(with query: String, completion: @escaping (Result<[Title], Error>) -> Void) {
         //đề phòng lỗi query
         guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
-        
         //https://api.themoviedb.org/3/search/movie?query=Jack+Reacher&api_key=1fa244b2c0707c1930e3912ac563b85a
         guard let url = URL(string: "\(Constants.baseUrl)/3/search/movie?query=\(query)&api_key=\(Constants.API_KEY)") else {
             return
@@ -464,7 +463,6 @@ func search(with query: String, completion: @escaping (Result<[Title], Error>) -
                 completion(.failure(APIError.failedToGetData))
             }
         }
-        
         task.resume()
     }
 ~~~
@@ -525,7 +523,6 @@ func getMovie(with query: String) {
         guard let url = URL(string: "\(Constants.YoutubeBaseURL)q=\(query)&key=\(Constants.YoutubeAPI_KEY)") else {
             return
         }
-        
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data, error == nil else {
                 return
@@ -538,7 +535,6 @@ func getMovie(with query: String) {
                 print(error)
             }
         }
-        
         task.resume()
     }
 ~~~
