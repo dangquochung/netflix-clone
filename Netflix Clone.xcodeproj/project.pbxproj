@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F10FFAE2B6A32C900117682 /* YoutubeSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F10FFAD2B6A32C900117682 /* YoutubeSearchResponse.swift */; };
 		1F1687EC2B62768600446DC4 /* CollectionViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1687EB2B62768600446DC4 /* CollectionViewTableViewCell.swift */; };
 		1F1687EE2B62EE6D00446DC4 /* HeroHeaderUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1687ED2B62EE6D00446DC4 /* HeroHeaderUIView.swift */; };
 		1F3A691C2B678C7600D203F1 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3A691B2B678C7600D203F1 /* Extensions.swift */; };
@@ -31,6 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1F10FFAD2B6A32C900117682 /* YoutubeSearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeSearchResponse.swift; sourceTree = "<group>"; };
 		1F1687EB2B62768600446DC4 /* CollectionViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewTableViewCell.swift; sourceTree = "<group>"; };
 		1F1687ED2B62EE6D00446DC4 /* HeroHeaderUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroHeaderUIView.swift; sourceTree = "<group>"; };
 		1F3A691B2B678C7600D203F1 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				1F84E72C2B66B1F2005A1ABF /* Title.swift */,
+				1F10FFAD2B6A32C900117682 /* YoutubeSearchResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 				1F3A691C2B678C7600D203F1 /* Extensions.swift in Sources */,
 				1F3A69272B683B1200D203F1 /* TitleTableViewCell.swift in Sources */,
 				1FAED3482B61A02200839374 /* AppDelegate.swift in Sources */,
+				1F10FFAE2B6A32C900117682 /* YoutubeSearchResponse.swift in Sources */,
 				1F84E72B2B66AB17005A1ABF /* APICaller.swift in Sources */,
 				1F83B6232B693F640001F059 /* SearchResultViewController.swift in Sources */,
 				1F3A69292B683D7900D203F1 /* TItleViewModel.swift in Sources */,
