@@ -671,4 +671,35 @@ func configure(with model: TitlePreviewViewModel) {
 
 ***
 
-18
+18. Refactoring TableviewHeader Hero Title
+
+Ý tưởng là: headerview đang bên trong viewdidload đưa ra bên ngoài , muốn random movie trên header view
+Tạo biến random 
+
+~~~
+private var randomTrendingMovie: Title?
+~~~
+
+Tạo hàm lấy movie trên header bằng cách lấy trending movie + random 1 trong các movie đó để hiển thị lên header 
+
+
+~~~
+private func configureHeroHeaderView() {
+        APICaller.shared.getTrendingMovies { [weak self] result in
+            switch result {
+            case .success(let titles):
+                let selectedTitle = titles.randomElement()
+                self?.randomTrendingMovie = selectedTitle
+                self?.headerView?.configure(with: TitleViewModel(titleName: selectedTitle?.original_title ?? "", posterURL: selectedTitle?.poster_path ?? ""))
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+~~~
+
+***
+
+19. Handling Tapping across all viewcontrollers
+
+
