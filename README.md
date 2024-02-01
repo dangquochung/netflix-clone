@@ -702,4 +702,69 @@ private func configureHeroHeaderView() {
 
 19. Handling Tapping across all viewcontrollers
 
+Ý tưởng 1  là khi tap vào các cell kết quả của upcoming và search thì đều nhảy sang titlepreviewcontroller
+Tạo protocol chưa actiondidtap
+
+~~~
+protocol SearchResultViewControllerDelegate: AnyObject {
+    func searchResultViewControllerDidTapItem(_ viewModel: TitlePreviewViewModel)
+}
+public weak var delegate: SearchResultViewControllerDelegate?
+func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        let title = titles[indexPath.row]
+        let titleName = title.original_title ?? ""
+        APICaller.shared.getMovie(with: titleName) { [weak self] result in
+            switch result {
+            case .success(let videoElement):
+                self?.delegate?.searchResultViewControllerDidTapItem(TitlePreviewViewModel(title: titleName, youtubeView: videoElement, titleOverview: title.overview ?? ""))
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+~~~
+
+Implement protocol
+~~~
+resultController.delegate = self
+func searchResultViewControllerDidTapItem(_ viewModel: TitlePreviewViewModel) {
+        DispatchQueue.main.async { [weak self] in
+            let vc = TitlePreviewViewController()
+            vc.configure(with: viewModel)
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+~~~
+
+Ý tưởng 2 là khi nhấn giữ vào cell kết quả của upcoming sẽ hiển thị lên menu action download
+
+~~~
+func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
+        let config = UIContextMenuConfiguration(
+            identifier: nil,
+            previewProvider: nil) { _ in
+                    let downloadAction = UIAction(
+                        title: "Download",
+                        subtitle: nil,
+                        image: nil,
+                        identifier: nil,
+                        discoverabilityTitle: nil,
+                        state: .off
+                    ) { _ in
+                        print("download tapped")
+                    }
+                return UIMenu(
+                    title: "",
+                    image: nil,
+                    identifier: nil,
+                    options: .displayInline,
+                    children: [downloadAction]
+                )
+            }
+        return config
+    }
+~~~
+
+20. Core Data
 
