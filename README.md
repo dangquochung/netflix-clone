@@ -546,3 +546,129 @@ Test
 ~~~
 
 16. Parsing Youtube API response
+
+
+~~~
+/*
+ items =     (
+             {
+         etag = "nokcGt9OrQ0QycurR_Z6fJV5eFQ";
+         id =             {
+             kind = "youtube#video";
+             videoId = LbKIKjgfT90;
+         };
+         kind = "youtube#searchResult";
+     },
+ */
+ ~~~
+ 
+ ~~~
+struct YoutubeSearchResponse: Codable {
+    let items: [VideoElement]
+}
+struct VideoElement: Codable {
+    let id: IdVideoElement
+}
+struct IdVideoElement: Codable {
+    let kind: String
+    let videoId: String?
+    let channelId: String?
+}
+~~~
+
+~~~
+func getMovie(with query: String, completion: @escaping (Result<VideoElement, Error>) -> Void) {
+        guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
+        //https://youtube.googleapis.com/youtube/v3/search?q=harry&key=[YOUR_API_KEY]
+        guard let url = URL(string: "\(Constants.YoutubeBaseURL)q=\(query)&key=\(Constants.YoutubeAPI_KEY)") else {
+            return
+        }
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            do {
+//                let results = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
+                let results = try JSONDecoder().decode(YoutubeSearchResponse.self, from: data)
+                completion(.success(results.items[0]))
+            }
+            catch {
+                completion(.failure(error))
+               print(error.localizedDescription)
+            }
+        }
+        task.resume()
+    }
+~~~
+
+
+*** 
+
+17. Handling selection of cell and create title preview controller
+
+Ý tưởng là khi selection cell sẽ push ra title previewcontroller và hiển thị video preview Kim name và review content
+
+Tạo ra delegate khi didtapcell 
+
+~~~
+protocol CollectionViewTableViewCellDelegate: AnyObject {
+    func collectionViewTableCellDidTapCell(_ cell: CollectionViewTableViewCell, viewModel: TitlePreviewViewModel)
+}
+weak var delegate: CollectionViewTableViewCellDelegate?
+~~~
+
+Ở collectiontableviewcell, xử didtapcell, gọi api gồm name+ trailer , nhận được data trả về, format data dưới dạng titlepreviewmodel và perform delegate để thực hiện lệnh bên trong
+
+~~~
+func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        let title = titles[indexPath.row]
+        guard let titleName = title.original_title ?? title.original_name else {
+            return
+        }
+        APICaller.shared.getMovie(with: titleName + " trailer") { [weak self] result in
+            switch result {
+            case .success(let videoElement):
+                let title = self?.titles[indexPath.row]
+                guard let titleOverview = title?.overview else {
+                    return
+                }
+                guard let strongSelf = self else {
+                    return
+                }
+                let viewModel = TitlePreviewViewModel(title: titleName, youtubeView: videoElement, titleOverview: titleOverview)
+                self?.delegate?.collectionViewTableCellDidTapCell(strongSelf, viewModel: viewModel)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+~~~
+
+Triển khai hành động trong didtapcell , configure và pushview, hàm configure để load video preview bằng url đc api trả về
+
+~~~
+extension HomeViewController: CollectionViewTableViewCellDelegate {
+    func collectionViewTableCellDidTapCell(_ cell: CollectionViewTableViewCell, viewModel: TitlePreviewViewModel) {
+        DispatchQueue.main.async { [weak self] in
+            let vc = TitlePreviewViewController()
+            vc.configure(with: viewModel)
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+}
+func configure(with model: TitlePreviewViewModel) {
+        titleLabel.text = model.title
+        overviewLabel.text = model.titleOverview
+        guard let url = URL(string: "https://www.youtube.com/embed/\(model.youtubeView.id.videoId)") else {
+            print("Invalid URL")
+            return
+        }
+        print("check URL>>>\(url)")
+        webView.load(URLRequest(url: url))
+    }
+~~~
+
+***
+
+18

@@ -29,6 +29,8 @@
 		1FAED3622B61A3FB00839374 /* UpcomingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAED3612B61A3FB00839374 /* UpcomingViewController.swift */; };
 		1FAED3642B61A42E00839374 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAED3632B61A42E00839374 /* SearchViewController.swift */; };
 		1FAED3662B61A44D00839374 /* DownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAED3652B61A44D00839374 /* DownloadViewController.swift */; };
+		1FCB1B4C2B6B8708005BF5BC /* TitlePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB1B4B2B6B8708005BF5BC /* TitlePreviewViewController.swift */; };
+		1FCB1B4E2B6BE7FE005BF5BC /* TitlePreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB1B4D2B6BE7FE005BF5BC /* TitlePreviewViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +56,8 @@
 		1FAED3612B61A3FB00839374 /* UpcomingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingViewController.swift; sourceTree = "<group>"; };
 		1FAED3632B61A42E00839374 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		1FAED3652B61A44D00839374 /* DownloadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadViewController.swift; sourceTree = "<group>"; };
+		1FCB1B4B2B6B8708005BF5BC /* TitlePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitlePreviewViewController.swift; sourceTree = "<group>"; };
+		1FCB1B4D2B6BE7FE005BF5BC /* TitlePreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitlePreviewViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				1F3A69282B683D7900D203F1 /* TItleViewModel.swift */,
+				1FCB1B4D2B6BE7FE005BF5BC /* TitlePreviewViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -129,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				1F83B6222B693F640001F059 /* SearchResultViewController.swift */,
+				1FCB1B4B2B6B8708005BF5BC /* TitlePreviewViewController.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -263,6 +269,7 @@
 				1FAED34C2B61A02200839374 /* MainTabBarViewController.swift in Sources */,
 				1F3A69202B680D0400D203F1 /* TitleCollectionViewCell.swift in Sources */,
 				1F1687EC2B62768600446DC4 /* CollectionViewTableViewCell.swift in Sources */,
+				1FCB1B4C2B6B8708005BF5BC /* TitlePreviewViewController.swift in Sources */,
 				1F3A691C2B678C7600D203F1 /* Extensions.swift in Sources */,
 				1F3A69272B683B1200D203F1 /* TitleTableViewCell.swift in Sources */,
 				1FAED3482B61A02200839374 /* AppDelegate.swift in Sources */,
@@ -271,6 +278,7 @@
 				1F83B6232B693F640001F059 /* SearchResultViewController.swift in Sources */,
 				1F3A69292B683D7900D203F1 /* TItleViewModel.swift in Sources */,
 				1FAED3662B61A44D00839374 /* DownloadViewController.swift in Sources */,
+				1FCB1B4E2B6BE7FE005BF5BC /* TitlePreviewViewModel.swift in Sources */,
 				1FAED34A2B61A02200839374 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
