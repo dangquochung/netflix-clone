@@ -768,3 +768,92 @@ func collectionView(_ collectionView: UICollectionView, contextMenuConfiguration
 
 20. Core Data
 
+Tạo bộ nhớ coredata khi khởi tạo dự án 
+- Tạo entities TitleItem có chứa các attribute tương ứng với các propertie trong api được trả về 
+- Tạo DataPersistenceManager để quản lý database
+- Save title to database
+
+~~~
+func downloadTitleWithModel(model: Title, completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        let context  = appDelegate.persistentContainer.viewContext
+        let item = TitleItem(context: context)
+        item.original_title = model.original_title
+        item.id = Int64(model.id)
+        item.original_name = model.original_name
+        item.overview = model.overview
+        item.media_type = model.media_type
+        item.poster_path = model.poster_path
+        item.release_date = model.release_date
+        item.vote_count = Int64(model.vote_count)
+        item.vote_average = model.vote_average
+        do {
+            try context.save()
+            completion(.success(()))
+        }
+        catch {
+            completion(.failure(DatabaseError.failedToSaveData))
+            print(error.localizedDescription)
+        }
+    }
+~~~
+
+- Load data từ database
+
+~~~
+    func fetchingTitlesFromDatabase(completion: @escaping (Result<[TitleItem], Error>) -> Void) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        let context  = appDelegate.persistentContainer.viewContext
+        let request: NSFetchRequest<TitleItem>
+        request = TitleItem.fetchRequest()
+        do {
+            let titles = try context.fetch(request)
+            completion(.success(titles))
+        } catch {
+            completion(.failure(DatabaseError.failedToFetchData))
+        }
+    }
+~~~
+
+- Xóa data từ database
+
+~~~
+func deleteTitleWith(model: TitleItem, completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        let context  = appDelegate.persistentContainer.viewContext
+        context.delete(model) // asking database manager to delete certain object
+        do {
+            try context.save()
+            completion(.success(()))
+        } catch {
+            completion(.failure(DatabaseError.failedToDeleteData))
+        }
+    }
+~~~
+
+- Tạo download viewcontroller fetch data from database
+
+~~~
+private func fetchLocalStorageForDownload() {
+        DataPersistenceManager.shared.fetchingTitlesFromDatabase { [weak self] result in
+            switch result {
+            case .success(let titles):
+                self?.titles = titles
+                DispatchQueue.main.async {
+                    self?.downloadedTable.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+~~~
+
+***
+END.
